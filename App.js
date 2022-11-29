@@ -7,6 +7,9 @@ import Cadastro from "./screens/Cadastro";
 import Login from "./screens/Login";
 import AreaLogada from "./screens/AreaLogada";
 // Início (Como foi passado pelo professor)
+
+import { app } from "./firebaseConfig";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
