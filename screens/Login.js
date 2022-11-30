@@ -1,35 +1,73 @@
 import { useState } from "react";
 import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
+/* Importamos os recursos de autenticação através das configurações firebase */
+import { auth } from "../firebaseConfig";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   const login = () => {
-    // console.log(email, senha);
     if (!email || !senha) {
-      Alert.alert("Atenção!", "Você deve preencher todos os campos");
-      return; // parar o processo
+      Alert.alert("Atenção", "Você deve preencher todos os campos");
+      return;
     }
+
+    signInWithEmailAndPassword(auth, email, senha)
+      .then(() => {
+        navigation.navigate("AreaLogada");
+      })
+      .catch((error) => {
+        let mensagem;
+        switch (error.code) {
+          case "auth/user-not-found":
+            mensagem = "Usuário não encontrado!";
+            break;
+          case "auth/wrong-password":
+            mensagem = "Senha incorreta";
+            break;
+          default:
+            mensagem = "Houve um erro, tente novamente mais tarde";
+            break;
+        }
+        Alert.alert("Ops!", mensagem);
+      });
   };
 
+  const recuperarSenha = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert("Recuperar senha", "Verifique seu E-mail");
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <View style={estilos.container}>
       <View style={estilos.formulario}>
         <TextInput
           onChangeText={(valor) => setEmail(valor)}
+          keyboardType="email-address"
           placeholder="E-mail"
           style={estilos.input}
-          keyboardType="email-address"
         />
         <TextInput
           onChangeText={(valor) => setSenha(valor)}
+          secureTextEntry
           placeholder="Senha"
           style={estilos.input}
-          secureTextEntry
         />
         <View style={estilos.botoes}>
           <Button title="Entre" color="green" onPress={login} />
+
+          <Button
+            title="Recuperar Senha"
+            color="blue"
+            onPress={recuperarSenha}
+          />
         </View>
       </View>
     </View>
