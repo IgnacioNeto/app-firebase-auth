@@ -8,14 +8,11 @@ import {
   View,
 } from "react-native";
 
-/* Importamos os recursos de autenticação através das configurações Firebase */
-import { auth } from "../firebaseConfig";
-
-/* Importamos as funções de autenticação diretamente da lib */
 import {
-  signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+import { auth } from "../firebaseConfig";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -25,7 +22,7 @@ const Login = ({ navigation }) => {
   const login = () => {
     if (!email || !senha) {
       Alert.alert("Atenção!", "Você deve preencher todos os campos");
-      return; // parar o processo
+      return;
     }
 
     setLoading(true);
@@ -34,13 +31,14 @@ const Login = ({ navigation }) => {
         navigation.replace("AreaLogada");
       })
       .catch((error) => {
-        // console.log(error);
-        // console.log(error.code);
+        /* console.log(error); */
+        /* console.log(error.code); */
+
         let mensagem;
         switch (error.code) {
           case "auth/user-not-found":
-            mensagem = "Usuário não encontrado!";
-            break;
+            mensagem = "Usuário não encontrado! Faça um cadastro!";
+
           case "auth/wrong-password":
             mensagem = "Senha incorreta";
             break;
@@ -55,7 +53,7 @@ const Login = ({ navigation }) => {
       });
   };
 
-  const recuperarSenha = () => {
+  const recsenhar = () => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
         Alert.alert("Recuperar senha", "Verifique sua caixa de entrada");
@@ -78,7 +76,6 @@ const Login = ({ navigation }) => {
           style={estilos.input}
           secureTextEntry
         />
-
         <View style={estilos.botoes}>
           <Button
             disabled={loading}
@@ -87,13 +84,9 @@ const Login = ({ navigation }) => {
             onPress={login}
           />
 
-          {loading && <ActivityIndicator size="large" color="green" />}
+          {loading && <ActivityIndicator size="small" color="#0000ff" />}
 
-          <Button
-            title="Recuperar senha"
-            color="darkgreen"
-            onPress={recuperarSenha}
-          />
+          <Button title="Recuparar senha" color="green" onPress={recsenhar} />
         </View>
       </View>
     </View>

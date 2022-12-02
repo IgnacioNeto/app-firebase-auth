@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { auth } from "../firebaseConfig";
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Cadastro = ({ navigation }) => {
@@ -10,26 +11,29 @@ const Cadastro = ({ navigation }) => {
 
   const cadastrar = () => {
     if (!email || !senha) {
-      Alert.alert("Atenção", "Você deve preencher e-mail e senha");
+      Alert.alert(
+        "Atenção",
+        "Você deve preencher o campos solicitados de e-mail e senha"
+      );
       return;
     }
 
     createUserWithEmailAndPassword(auth, email, senha)
       .then(() => {
-        Alert.alert("Cadastro", "Conta criada com sucesso!", [
+        Alert.alert("Cadastra", "Conta criado com sucesso!", [
           {
-            text: "Não, me deixe aqui mesmo",
+            text: "Não, quero voltar para o inicio",
             onPress: () => {
-              return false;
+              return navigation.navigate("Inicial");
             },
             style: "cancel",
           },
           {
-            text: "Sim, bora lá!",
+            text: "Sim, quero logar",
             onPress: () => {
-              navigation.replace("AreaLogada");
+              return navigation.navigate("AreaLogada");
             },
-            style: "default",
+            style: "cancel",
           },
         ]);
       })
@@ -38,22 +42,22 @@ const Cadastro = ({ navigation }) => {
         let mensagem;
         switch (error.code) {
           case "auth/email-already-in-use":
-            mensagem = "E-mail já cadastrado!";
-            break;
-
-          case "auth/weak-password":
-            mensagem = "Senha deve ter pelo menos 6 dígitos!";
+            mensagem = "E-mail já esta em uso";
             break;
 
           case "auth/invalid-email":
-            mensagem = "Endereço de e-mail inválido!";
+            mensagem = "E-mail inválido";
+            break;
+
+          case "auth/weak-password":
+            mensagem = "Senha deve conter minimo 6 digitos";
             break;
 
           default:
-            mensagem = "Algo deu errado... tente novamente!";
+            mensagem = "Houve um erro, tente novamente mais tarde";
             break;
         }
-        Alert.alert("Atenção!", mensagem);
+        Alert.alert("Atenção", mensagem);
       });
   };
 
