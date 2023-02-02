@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/0745c591-9a47-446a-8d1e-92b7dd73c44f"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -34,6 +35,9 @@
         "projectId": "0745c591-9a47-446a-8d1e-92b7dd73c44f"
       }
     },
-    "owner": "ignacioneto"
+    "owner": "ignacioneto",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
