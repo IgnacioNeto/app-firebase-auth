@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-firebase-auth",
-    "slug": "app-firebase-auth",
+    "name": "App auth",
+    "slug": "app-auth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0745c591-9a47-446a-8d1e-92b7dd73c44f"
+      }
+    },
+    "owner": "ignacioneto"
   }
 }
